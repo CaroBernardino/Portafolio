@@ -1,351 +1,372 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portafolio de Programación</title>
+    <title>Portafolio | Cindy Bernardino</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1', // Indigo
+                        secondary: '#ec4899', // Pink
+                        dark: '#0f172a', // Slate 900
+                        card: '#1e293b', // Slate 800
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        html {
-            scroll-behavior: smooth;
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .font-title {
-            font-family: 'Poppins', sans-serif;
+        .tech-pill {
+            transition: all 0.3s ease;
+        }
+        .tech-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Estilos para el carrusel interno */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
-
-        .animate-fadeIn {
-            animation: fadeIn 1.2s ease-out forwards;
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        .slider-btn:hover { background: rgba(99, 102, 241, 0.8); }
+        .prev { left: 10px; }
+        .next { right: 10px; }
     </style>
-
 </head>
 
-<body class="flex bg-gray-900 text-white">
+<body class="bg-dark text-slate-300 antialiased relative overflow-x-hidden">
 
+    <div class="fixed top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 -z-10"></div>
+    <div class="fixed bottom-0 right-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 -z-10"></div>
 
-    <!-- Sidebar izquierdo 
-    <header
-        class="w-64 h-screen bg-gray-800/70 backdrop-blur-sm shadow-md flex flex-col items-center py-8 space-y-6 z-10 relative">
-        <div class="absolute right-0 top-0 h-full w-1 bg-gradient-to-r from-white/10 to-transparent"></div>
-
-        Foto de perfil 
-        <img src="myAvatar.png" alt="Foto de Cindy Bernardino"
-            class="w-32 h-32 rounded-full border-1 border-white shadow-lg object-cover" />
-
-         Contenido del sidebar 
-        <h1 class="text-2xl font-bold text-blue-400">Portafolio</h1>
-        <nav class="flex flex-col space-y-4">
-            <a href="#inicio" class="text-gray-300 hover:text-blue-400">Inicio</a>
-            <a href="#proyectos" class="text-gray-300 hover:text-blue-400">Proyectos</a>
-            <a href="#contacto" class="text-gray-300 hover:text-blue-400">Contacto</a>
-        </nav>
-    </header>-->
-
-    <!-- Contenido principal -->
-    <main class="flex-1 p-10 bg-gray-900 space-y-16">
-        <!-- Bienvenida -->
-        <section id="home" class="min-h-screen flex flex-col justify-center items-center px-6 text-center">
-            <h1
-                class="text-5xl md:text-6xl font-light bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent animate-fadeIn font-title">
-                Bienvenido a mi portafolio
-            </h1>
-
-            <p class="mt-6 text-lg max-w-xl animate-fadeIn delay-200">
-                Soy Cindy Bernardino, estudiante de informática con pasión por el desarrollo web.
-            </p>
-
-            <img src="imagenperfil.jpg" alt="Cindy Bernardino"
-                class="mt-8 w-40 h-40 object-cover rounded-xl shadow-lg animate-fadeIn delay-300" />
-
-            <a href="#proyectos"
-                class="mt-12 inline-block bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-2 rounded-full text-white hover:scale-105 transition transform">
-                Ver Proyectos ↓
+    <nav class="fixed w-full z-50 top-0 start-0 glass border-b-0">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center space-x-3">
+                <span class="self-center text-2xl font-bold whitespace-nowrap text-white">CB<span class="text-primary">.</span></span>
             </a>
-        </section>
+            <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-400 rounded-lg md:hidden hover:bg-gray-700 focus:outline-none">
+                <span class="sr-only">Abrir menú</span>
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0">
+                    <li><a href="#inicio" class="block py-2 px-3 text-primary" aria-current="page">Inicio</a></li>
+                    <li><a href="#skills" class="block py-2 px-3 text-gray-300 hover:text-primary transition">Habilidades</a></li>
+                    <li><a href="#proyectos" class="block py-2 px-3 text-gray-300 hover:text-primary transition">Proyectos</a></li>
+                    <li><a href="#experiencia" class="block py-2 px-3 text-gray-300 hover:text-primary transition">Experiencia</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-        <h1
-            class="text-5xl md:text-6xl font-light bg-gradient-to-r from-purple-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent animate-fadeIn font-title text-center mt-12 mb-6">
-            Proyectos
-        </h1>
-
-        <!-- Proyecto 1 -->
-        <section id="proyectos" class="flex flex-col md:flex-row items-center justify-between gap-10 px-10 py-20 min-h-screen bg-gray-900
-            text-white border-b border-white/10">
-            <!-- Descripción del proyecto -->
-            <div class="md:w-1/2 space-y-6">
-                <h2 class="text-4xl font-extrabold text-blue-400 tracking-wide animate-fade-in-up">
-                    Catálogo de Fauna
-                </h2>
-                <p class="text-lg text-gray-300 leading-relaxed">
-                    Sistema de fauna que muestra un listado de animales, en los cuales se visualiza información
-                    relevante, se puede filtrar por habitat.
-                    Incluye funcionalidades para administrar usuarios, roles y estados mediante operaciones CRUD.
-                    El acceso al sistema se gestiona a través de solicitudes de acceso, garantizando control y seguridad
-                    en la gestión de datos.
+    <section id="inicio" class="min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6 order-2 md:order-1">
+                <span class="px-3 py-1 text-sm font-semibold text-primary bg-primary/10 rounded-full border border-primary/20">
+                    👋 Hola, soy Cindy Bernardino
+                </span>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight">
+                    Desarrolladora <br>
+                    <span class="gradient-text">de sistemas web</span>
+                </h1>
+                <p class="text-lg text-slate-400 max-w-lg">
+                    Apasionada por crear experiencias web intuitivas y sistemas robustos. Especializada en el ecosistema .NET y actualmente expandiendo horizontes con Java Spring Boot.
                 </p>
+                
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="CV.pdf" target="_blank" class="px-8 py-3 bg-white text-dark font-bold rounded-full hover:bg-gray-200 transition flex items-center gap-2">
+                        <i class="fa-solid fa-file-arrow-down text-primary"></i> Descargar CV
+                    </a>
+                    <a href="https://github.com/CaroBernardino" target="_blank" class="px-8 py-3 glass text-white font-bold rounded-full hover:bg-white/10 transition flex items-center gap-2">
+                        <i class="fa-brands fa-github"></i> GitHub
+                    </a>
+                </div>
+            </div>
+            
+            <div class="order-1 md:order-2 flex justify-center relative">
+                <div class="absolute inset-0 bg-gradient-to-tr from-primary to-secondary rounded-full blur-2xl opacity-20 transform scale-90"></div>
+                <img src="imagenperfil.jpg" alt="Cindy Bernardino" class="relative w-64 h-64 md:w-80 md:h-80 object-cover rounded-2xl shadow-2xl border-2 border-white/10 rotate-3 hover:rotate-0 transition duration-500">
+            </div>
+        </div>
+    </section>
 
-                <!-- Tecnologías usadas -->
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="bg-blue-600 text-white text-xs px-3 py-1 rounded">ASP.NET</span>
-                    <span class="bg-gray-700 text-white text-xs px-3 py-1 rounded">HTML</span>
-                    <span class="bg-yellow-500 text-white text-xs px-3 py-1 rounded">JavaScript</span>
-                    <span class="bg-purple-700 text-white text-xs px-3 py-1 rounded">CSS</span>
-                    <span class="bg-indigo-600 text-white text-xs px-3 py-1 rounded">Bootstrap</span>
-                    <span class="bg-green-600 text-white text-xs px-3 py-1 rounded">SQL Server</span>
+    <section id="skills" class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-16"><span class="border-b-4 border-primary pb-2">Stack Tecnológico</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-server text-secondary"></i> Backend & Lenguajes
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-blue-400 tech-pill border border-blue-400/20">C#</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-orange-400 tech-pill border border-orange-400/20">Java (Spring Boot)</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-purple-400 tech-pill border border-purple-400/20">ASP.NET Core</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-indigo-400 tech-pill border border-indigo-400/20">PHP</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-yellow-400 tech-pill border border-yellow-400/20">Python (Aprendiendo)</span>
+                    </div>
                 </div>
 
-                <ul class="list-disc list-inside text-gray-400 space-y-1">
-                    <li>Inicio de sesión</li>
-                    <li>Agregar, editar y eliminar animales</li>
-                    <li>Cambio de contraseña</li>
-                    <li>Visualización por hábitat</li>
-                    <li>Acceso por medio de solicitud</li>
-                    <li>Control de acceso según rol</li>
-                </ul>
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition border border-slate-700">
+                    <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-database text-primary"></i> Frontend & Datos
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-yellow-300 tech-pill border border-yellow-300/20">JavaScript</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-orange-500 tech-pill border border-orange-500/20">HTML5</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-blue-500 tech-pill border border-blue-500/20">CSS3</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-cyan-400 tech-pill border border-cyan-400/20">Tailwind CSS</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-green-400 tech-pill border border-green-400/20">SQL Server</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-blue-300 tech-pill border border-blue-300/20">MySQL</span>
+                        <span class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-medium text-blue-200 tech-pill border border-blue-200/20">PostgreSQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- Enlace GitHub -->
-                <a href="https://github.com/CaroBernardino/catalogo" target="_blank"
-                    class="inline-flex items-center gap-2 mt-6 px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-white font-medium transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
-                        aria-hidden="true">
-                        <path fill-rule="evenodd"
-                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.607.069-.607 1.004.07 1.532 1.033 1.532 1.033.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.688-.103-.253-.446-1.27.098-2.646 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.376.202 2.393.1 2.646.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.565 4.942.36.31.68.922.68 1.859 0 1.341-.012 2.422-.012 2.75 0 .269.18.58.688.48A10.02 10.02 0 0022 12.017C22 6.484 17.523 2 12 2z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Ver código en GitHub
+    <section id="proyectos" class="py-20 px-6 bg-black/20">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Proyectos Destacados</h2>
+                <p class="text-slate-400">Una selección de mis desarrollos recientes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="glass rounded-xl overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col h-full border border-primary/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]">
+                      <div class="h-48 bg-gray-800 relative overflow-hidden group" id="carousel-fauna">
+                        <div class="slider-container">
+                            <img src="proyecto3/img1.png" class="slide active w-full h-full object-cover" alt="Restaurante">
+                            <img src="proyecto3/img2.png" class="slide w-full h-full object-cover" alt="Restaurante">
+                            <img src="proyecto3/img4.png" class="slide w-full h-full object-cover" alt="Restaurante">
+                            <img src="proyecto3/img5.png" class="slide w-full h-full object-cover" alt="Restaurante">
+                            <img src="proyecto3/img6.png" class="slide w-full h-full object-cover" alt="Restaurante">
+                             <img src="proyecto3/img7.png" class="slide w-full h-full object-cover" alt="Restaurante">
+
+                        </div>
+                        <button class="slider-btn prev" onclick="moveSlide('carousel-fauna', -1)">&#10094;</button>
+                        <button class="slider-btn next" onclick="moveSlide('carousel-fauna', 1)">&#10095;</button>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Brisa Marina</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">
+                            Plataforma integral para gestión de restaurantes. Permite reservas online, administración de menús dinámicos, autenticación segura y roles de usuario (Admin/Cliente).
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs px-2 py-1 rounded bg-orange-500/20 text-orange-300">Java Spring Boot</span>
+                            <span class="text-xs px-2 py-1 rounded bg-green-500/20 text-green-300">Thymeleaf</span>
+                            <span class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-300">MySQL</span>
+                        </div>
+                        <button disabled class="inline-flex items-center justify-center gap-2 w-full py-2 bg-slate-700/50 text-gray-400 rounded-lg text-sm font-medium cursor-not-allowed">
+                            <i class="fa-solid fa-code"></i> Código (Próximamente)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass rounded-xl overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col h-full">
+                    <div class="h-48 bg-gray-800 relative overflow-hidden group" id="carousel-fauna">
+                        <div class="slider-container">
+                            <img src="proyecto1/img1.png" class="slide active w-full h-full object-cover" alt="Fauna 1">
+                            <img src="proyecto1/img2.png" class="slide w-full h-full object-cover" alt="Fauna 2">
+                            <img src="proyecto1/img3.png" class="slide w-full h-full object-cover" alt="Fauna 3">
+                            <img src="proyecto1/img4.png" class="slide w-full h-full object-cover" alt="Fauna 4">
+                        </div>
+                        <button class="slider-btn prev" onclick="moveSlide('carousel-fauna', -1)">&#10094;</button>
+                        <button class="slider-btn next" onclick="moveSlide('carousel-fauna', 1)">&#10095;</button>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Catálogo de Fauna</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">
+                            Sistema CRUD completo. Gestión de especies, hábitats y usuarios. Incluye sistema de solicitudes de acceso y filtrado avanzado.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-300">ASP.NET</span>
+                            <span class="text-xs px-2 py-1 rounded bg-yellow-500/20 text-yellow-300">SQL Server</span>
+                            <span class="text-xs px-2 py-1 rounded bg-pink-500/20 text-pink-300">Bootstrap</span>
+                        </div>
+                        <a href="https://github.com/CaroBernardino/catalogo" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-2 bg-slate-700 hover:bg-primary text-white rounded-lg transition text-sm font-medium">
+                            <i class="fa-brands fa-github"></i> Ver en GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="glass rounded-xl overflow-hidden hover:-translate-y-2 transition duration-300 flex flex-col h-full">
+                    <div class="h-48 bg-gray-800 relative overflow-hidden group" id="carousel-gestion">
+                        <div class="slider-container">
+                            <img src="proyecto2/img1.png" class="slide active w-full h-full object-cover" alt="Gestion 1">
+                            <img src="proyecto2/img2.png" class="slide w-full h-full object-cover" alt="Gestion 2">
+                            <img src="proyecto2/img3.png" class="slide w-full h-full object-cover" alt="Gestion 3">
+                            <img src="proyecto2/img4.png" class="slide w-full h-full object-cover" alt="Gestion 4">
+                        </div>
+                        <button class="slider-btn prev" onclick="moveSlide('carousel-gestion', -1)">&#10094;</button>
+                        <button class="slider-btn next" onclick="moveSlide('carousel-gestion', 1)">&#10095;</button>
+                    </div>
+
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-xl font-bold text-white mb-2">Sistema de Gestión</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">
+                            Dashboard administrativo con gráficos interactivos, asignación de empleados a proyectos y cálculo de nóminas.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-300">ASP.NET</span>
+                            <span class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-300">JS Charts</span>
+                            <span class="text-xs px-2 py-1 rounded bg-yellow-500/20 text-yellow-300">SQL Server</span>
+                        </div>
+                        <a href="https://github.com/CaroBernardino/Gesti-n-de-Proyectos" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-2 bg-slate-700 hover:bg-primary text-white rounded-lg transition text-sm font-medium">
+                            <i class="fa-brands fa-github"></i> Ver en GitHub
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="experiencia" class="py-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-16">Trayectoria</h2>
+            
+            <div class="relative border-l border-gray-700 ml-3 md:ml-6 space-y-12">
+                
+                 <div class="ml-6 md:ml-10 relative">
+                    <span class="absolute -left-[42px] md:-left-[58px] flex items-center justify-center w-10 h-10 bg-emerald-500 rounded-full ring-8 ring-dark">
+                        <i class="fa-solid fa-utensils text-white text-sm"></i>
+                    </span>
+                    <div class="glass p-6 rounded-xl border border-slate-700">
+                        <h3 class="flex items-center mb-1 text-lg font-semibold text-white">Gestión de Restaurante - Brisa Marina</h3>
+                        <time class="block mb-2 text-sm font-normal leading-none text-gray-500">Proyecto Full Stack</time>
+                        <p class="mb-4 text-base font-normal text-gray-400">Desarrollo integral de una plataforma web con <strong>Java Spring Boot</strong>. Creación de sistema de reservas, roles de usuario y gestión de menús, enfocándome en la arquitectura MVC y buenas prácticas de desarrollo.</p>
+                    </div>
+                </div>
+
+                <div class="ml-6 md:ml-10 relative">
+                    <span class="absolute -left-[42px] md:-left-[58px] flex items-center justify-center w-10 h-10 bg-primary rounded-full ring-8 ring-dark">
+                        <i class="fa-solid fa-graduation-cap text-white text-sm"></i>
+                    </span>
+                    <div class="glass p-6 rounded-xl border border-slate-700">
+                        <h3 class="flex items-center mb-1 text-lg font-semibold text-white">Proyecto Universitario - Catálogo de Fauna</h3>
+                        <time class="block mb-2 text-sm font-normal leading-none text-gray-500">Desarrollo Académico</time>
+                        <p class="mb-4 text-base font-normal text-gray-400">Lideré el diseño y desarrollo completo utilizando ASP.NET y SQL Server. Implementé la arquitectura de seguridad basada en roles y presenté la solución final ante el comité académico.</p>
+                    </div>
+                </div>
+
+                <div class="ml-6 md:ml-10 relative">
+                    <span class="absolute -left-[42px] md:-left-[58px] flex items-center justify-center w-10 h-10 bg-secondary rounded-full ring-8 ring-dark">
+                        <i class="fa-solid fa-book text-white text-sm"></i>
+                    </span>
+                    <div class="glass p-6 rounded-xl border border-slate-700">
+                        <h3 class="flex items-center mb-1 text-lg font-semibold text-white">Sistema de Biblioteca</h3>
+                        <time class="block mb-2 text-sm font-normal leading-none text-gray-500">Colaboración en Equipo</time>
+                        <p class="text-base font-normal text-gray-400">Desarrollo backend en PHP para la administración de préstamos y devoluciones. Optimización de consultas a base de datos MySQL para mejorar el rendimiento del sistema.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="glass border-t border-white/10 mt-20 pt-12 pb-8">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold text-white mb-6">¿Tienes un proyecto en mente?</h2>
+            <p class="text-slate-400 mb-8 max-w-xl mx-auto">Actualmente estoy abierta a oportunidades laborales y colaboraciones.</p>
+            
+            <div class="flex justify-center gap-6 mb-12">
+                <a href="mailto:carolinabernardinor@gmail.com" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-primary flex items-center justify-center transition text-white text-xl">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+
+                <a href="https://github.com/CaroBernardino" target="_blank" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-black flex items-center justify-center transition text-white text-xl">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+
+                <a href="CV.pdf" target="_blank" class="w-12 h-12 rounded-full bg-slate-800 hover:bg-green-600 flex items-center justify-center transition text-white text-xl">
+                    <i class="fa-solid fa-file-pdf"></i>
                 </a>
             </div>
 
-            <!-- Carrusel de imágenes -->
-            <div class="md:w-1/2 relative max-w-2xl mx-auto h-[320px] md:h-[400px]">
-                <div
-                    class="carousel carousel1 relative overflow-hidden rounded-xl shadow-lg border border-white/20 h-full">
-                    <img src="proyecto1/img1.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 1" />
-                    <img src="proyecto1/img2.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 2" />
-                    <img src="proyecto1/img3.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 3" />
-                    <img src="proyecto1/img4.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 4" />
-                    <img src="proyecto1/img5.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 5" />
-                    <img src="proyecto1/img6.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 6" />
-                    <img src="proyecto1/img8.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 8" />
-                    <img src="proyecto1/img9.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Imagen 9" />
-                </div>
-
-
-                <!-- Controles del carrusel -->
-                <div class="absolute top-1/2 left-0 right-0 flex justify-between px-4 transform -translate-y-1/2 z-20">
-                    <button onclick="prevSlide('carousel1')"
-                        class="bg-white/30 hover:bg-white/50 text-gray-900 text-2xl p-2 rounded-full shadow-md transition duration-300">
-                        ◀
-                    </button>
-                    <button onclick="nextSlide('carousel1')"
-                        class="bg-white/30 hover:bg-white/50 text-gray-900 text-2xl p-2 rounded-full shadow-md transition duration-300">
-                        ▶
-                    </button>
-                </div>
+            <div class="text-sm text-slate-600">
+                <p>&copy; 2025 Cindy Bernardino. Creado con HTML, Tailwind y mucho café ☕.</p>
             </div>
+        </div>
+    </footer>
 
-        </section>
+    <script>
+        // Script Menú Móvil
+        const btn = document.querySelector('[data-collapse-toggle="navbar-default"]');
+        const menu = document.getElementById('navbar-default');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
 
-        <!-- Proyecto 2 -->
-        <section id="" class="flex flex-col md:flex-row items-center justify-between gap-10 px-10 py-20 min-h-screen bg-gray-900
-            text-white border-b border-white/10">
-            <!-- Descripción del proyecto -->
-            <div class="md:w-1/2 space-y-6">
-                <h2 class="text-4xl font-extrabold text-blue-400 tracking-wide animate-fade-in-up">
-                    Gestión de proyectos
-                </h2>
-                <p class="text-lg text-gray-300 leading-relaxed">
-                    Sistema sencillo para la gestión de proyectos.
-                    Al iniciar sesión, se muestran dos gráficos interactivos: uno con la cantidad de empleados por
-                    departamento y otro con el estado actual de los proyectos y el salario promedio.
-                    El sistema permite administrar usuarios, proyectos y asignar empleados a proyectos mediante
-                    operaciones CRUD.
-                    El acceso se gestiona mediante credenciales asignadas a cada usuario, e incluye una opción de
-                    recuperación de cuenta para mayor seguridad.
-                </p>
+        // Script para los Carruseles
+        function moveSlide(carouselId, direction) {
+            const container = document.getElementById(carouselId);
+            const slides = container.querySelectorAll('.slide');
+            let activeIndex = Array.from(slides).findIndex(slide => slide.classList.contains('active'));
 
-                <!-- Tecnologías usadas -->
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="bg-blue-600 text-white text-xs px-3 py-1 rounded">ASP.NET</span>
-                    <span class="bg-gray-700 text-white text-xs px-3 py-1 rounded">HTML</span>
-                    <span class="bg-yellow-500 text-white text-xs px-3 py-1 rounded">JavaScript</span>
-                    <span class="bg-purple-700 text-white text-xs px-3 py-1 rounded">CSS</span>
-                    <span class="bg-indigo-600 text-white text-xs px-3 py-1 rounded">Bootstrap</span>
-                    <span class="bg-green-600 text-white text-xs px-3 py-1 rounded">SQL Server</span>
-                </div>
+            // Quitar clase active actual
+            slides[activeIndex].classList.remove('active');
 
-                <ul class="list-disc list-inside text-gray-400 space-y-1">
-                    <li>Inicio de sesión</li>
-                    <li>Visualización de datos mediante gráficos</li>
-                    <li>Agregar, editar y eliminar empleados</li>
-                    <li>Asignación de empleados a proyectos</li>
-                    <li>Gestión de proyectos</li>
-                    <li>Acceso por asignación de credenciales</li>
-                    <li>Recuperación de contraseña</li>
-                </ul>
+            // Calcular nuevo índice (circular)
+            let newIndex = activeIndex + direction;
+            if (newIndex < 0) newIndex = slides.length - 1;
+            if (newIndex >= slides.length) newIndex = 0;
 
-
-                <!-- Enlace GitHub -->
-                <a href="https://github.com/CaroBernardino/Gesti-n-de-Proyectos" target="_blank"
-                    class="inline-flex items-center gap-2 mt-6 px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-xl text-white font-medium transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"
-                        aria-hidden="true">
-                        <path fill-rule="evenodd"
-                            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.607.069-.607 1.004.07 1.532 1.033 1.532 1.033.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.688-.103-.253-.446-1.27.098-2.646 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.376.202 2.393.1 2.646.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.565 4.942.36.31.68.922.68 1.859 0 1.341-.012 2.422-.012 2.75 0 .269.18.58.688.48A10.02 10.02 0 0022 12.017C22 6.484 17.523 2 12 2z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Ver código en GitHub
-                </a>
-            </div>
-
-            <!-- Carrusel de imágenes - Proyecto 2 -->
-            <div class="md:w-1/2 relative max-w-2xl mx-auto h-[320px] md:h-[400px]">
-                <div
-                    class="carousel carousel2 relative overflow-hidden rounded-xl shadow-lg border border-white/20 h-full">
-                    <img src="proyecto2/img1.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Dashboard del sistema">
-                    <img src="proyecto2/img2.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Gráficos estadísticos">
-                    <img src="proyecto2/img3.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Gestión de empleados">
-                    <img src="proyecto2/img4.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Asignación de proyectos">
-                    <img src="proyecto2/img5.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Recuperación de contraseña">
-                    <img src="proyecto2/img6.png"
-                        class="carousel-image w-full h-full hidden object-cover transition-opacity duration-500 ease-in-out"
-                        alt="Administración de usuarios">
-                </div>
-
-                <!-- Controles del carrusel -->
-                <div class="absolute top-1/2 left-0 right-0 flex justify-between px-4 transform -translate-y-1/2 z-20">
-                    <button onclick="prevSlide('carousel2')"
-                        class="bg-white/30 hover:bg-white/50 text-gray-900 text-2xl p-2 rounded-full shadow-md transition duration-300">
-                        ◀
-                    </button>
-                    <button onclick="nextSlide('carousel2')"
-                        class="bg-white/30 hover:bg-white/50 text-gray-900 text-2xl p-2 rounded-full shadow-md transition duration-300">
-                        ▶
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sección de herramientas y lenguajes -->
-        <section id="herramientas"
-            class="px-10 py-20 bg-gray-900 text-white border-b border-white/10 max-w-5xl mx-auto">
-            <h2 class="text-4xl font-extrabold text-blue-400 mb-12 text-center">Lenguajes y Herramientas</h2>
-            <div class="max-w-xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-300 text-lg">
-                <ul class="list-disc list-inside space-y-2">
-                    <li>C#</li>
-                    <li>ASP.NET</li>
-                    <li>JavaScript</li>
-                    <li>HTML</li>
-                    <li>CSS</li>
-                    <li>Bootstrap</li>
-                    <li>PHP</li>
-                </ul>
-                <ul class="list-disc list-inside space-y-2">
-                    <li>SQL Server</li>
-                    <li>MySQL</li>
-                    <li>PostgreSQL</li>
-                    <li>Aprendiendo Tailwind CSS</li>
-                    <li>Aprendiendo Python</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Sección de experiencia -->
-        <section id="experiencia" class="px-10 py-20 bg-gray-900 text-white border-b border-white/10 max-w-5xl mx-auto">
-            <h2 class="text-4xl font-extrabold text-blue-400 mb-8 text-center">Experiencia</h2>
-            <div class="space-y-8 max-w-3xl mx-auto text-gray-300">
-                <article>
-                    <h3 class="text-2xl font-semibold text-white">Experiencia en proyectos educativos</h3>
-                    <p class="italic mb-2">Desarrollo de un sistema de biblioteca</p>
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Desarrollo de funcionalidades en php, para la administración de una biblioteca</li>
-                        <li>Implementación de mejoras en base de datos MySQL.</li>
-                        <li>Colaboración en equipo para el desarrollo del sistema.</li>
-                    </ul>
-                </article>
-
-                <article>
-                    <h3 class="text-2xl font-semibold text-white">Proyecto universitario Catálogo de Fauna</h3>
-                    <ul class="list-disc list-inside space-y-1">
-                        <li>Diseño y desarrollo completo del sistema con ASP.NET y SQL Server.</li>
-                        <li>Gestión de usuarios y control de acceso por roles.</li>
-                        <li>Despliegue y presentación ante profesores y compañeros.</li>
-                    </ul>
-                </article>
-            </div>
-        </section>
-
-        <!-- Sección de contacto -->
-        <section id="contacto" class="text-center pt-10 space-y-4">
-            <h2
-                class="text-3xl md:text-4xl font-bold text-transparent bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text drop-shadow-md">
-                ¡Pongámonos en contacto!
-            </h2>
-        
-            <!-- Botones -->
-            <div class="flex flex-wrap justify-center gap-4 mt-6">
-                <!-- Enviar correo -->
-                <a href="mailto:carolinabernardinor@gmail.com"
-                    class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition">
-                    Enviar correo
-                </a>
-
-                <!-- GitHub -->
-                <a href="https://github.com/CaroBernardino" target="_blank"
-                    class="px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-xl transition">
-                    Ver GitHub
-                </a>
-
-                <!-- Ver CV -->
-                <a href="CV.pdf" target="_blank"
-                    class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl transition">
-                    Ver CV
-                </a>
-            </div>
-        </section>
-    </main>
-
+            // Poner clase active al nuevo
+            slides[newIndex].classList.add('active');
+        }
+    </script>
 </body>
-<script>src="js.js"</script>
 </html>
